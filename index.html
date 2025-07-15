@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کارنمای کوتار</title>
+    <!-- لینک به فونت Vazirmatn از Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* فونت Vazirmatn */
+        html, body {
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            direction: rtl !important; /* تنظیم جهت نوشتار به راست به چپ برای کل صفحه و اطمینان از اعمال */
+            text-align: right; /* تنظیم تراز متن به راست برای کل صفحه */
+        }
+
+        /* رنگ سبز غالب */
+        :root {
+            --primary-green: #28a745; /* سبز اصلی */
+            --light-green: #d4edda; /* سبز روشن برای پس‌زمینه */
+            --dark-green: #1e7e34; /* سبز تیره برای هاور و فوکوس */
+            --border-color: #dee2e3;
+            --text-color: #333;
+            --header-bg: #ffffff;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            flex-direction: column; /* چینش عناصر داخلی هدر به صورت عمودی */
+            align-items: center; /* تراز کردنبه مرکز */
+            padding: 20px 30px;
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-top-row {
+            display: flex;
+            justify-content: space-between; /* عناصر به چپ و راست بروند */
+            align-items: baseline;
+            width: 100%; /* اشغال عرض کامل */
+            margin-bottom: 10px; /* فاصله بین سطر بالا و باکس هشدار */
+        }
+
+        .main-karnama-title {
+            margin: 0;
+            font-size: 2.2em;
+            color: var(--primary-green);
+            font-weight: 700;
+        }
+
+        .cotar-tagline-container {
+            /* در RTL، این به سمت چپ می‌رود */
+            text-align: left;
+        }
+
+        .cotar-tagline {
+            font-size: 0.9em; /* فونت کوچکتر */
+            color: #666;
+            white-space: nowrap; /* جلوگیری از شکستن خط */
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-alert-box-wrapper {
+            width: 100%; /* اطمینان از اشغال عرض کامل برای باکس هشدار */
+            display: flex;
+            justify-content: center; /* باکس هشدار در مرکز قرار گیرد */
+        }
+
+        .alert {
+            background-color: var(--light-green);
+            color: var(--dark-green);
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* متن را به سمت راست هدایت می‌کند */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            font-size: 0.9em;
+            text-align: right; /* متن داخلی راست‌چین */
+            line-height: 1.6;
+            font-family: 'Vazirmatn', sans-serif; /* اطمینان از اعمال فونت */
+            width: 100%; /* عرض کامل داخل wrapper */
+            box-sizing: border-box; /* برای جلوگیری از سرریز پدینگ */
+        }
+
+        .alert-icon {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-left: 10px; /* ایجاد فاصله در سمت چپ آیکون */
+            color: var(--dark-green);
+            flex-shrink: 0; /* جلوگیری از کوچک شدن آیکون */
+        }
+        .alert p {
+            flex-grow: 1; /* اجازه رشد به متن برای اشغال فضای موجود */
+            margin: 0; /* حذف margin پیش‌فرض p */
+        }
+
+
+        /* Tabs Navigation */
+        .tabs-navigation {
+            display: flex;
+            justify-content: flex-start; /* تب‌ها به سمت راست (در RTL، flex-start به معنای راست است) */
+            border-bottom: 1px solid var(--border-color);
+            background-color: #f9f9f9;
+            padding: 0 30px;
+            direction: rtl; /* اطمینان از راست‌چین بودن تب‌ها */
+        }
+
+        .tab-button {
+            background-color: transparent;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            top: 1px; /* برای هم‌ترازی بهتر با خط جداکننده */
+            font-family: 'Vazirmatn', sans-serif; /* اطمینان از اعمال فونت */
+        }
+
+        .tab-button:hover {
+            color: var(--primary-green);
+        }
+
+        .tab-button.active {
+            color: var(--primary-green);
+            border-bottom: 3px solid var(--primary-green);
+            font-weight: 700;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            padding: 30px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Controls Bar (Search and Filter) */
+        .controls-bar {
+            display: flex;
+            flex-direction: row-reverse; /* معکوس کردن ترتیب برای نمایش جستجو/فیلتر در راست */
+            justify-content: space-between; /* جستجو/فیلتر در راست، تعداد طرح‌ها در چپ */
+            align-items: center;
+            margin-bottom: 25px;
+            background-color: #f9f9f9;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            direction: rtl; /* اطمینان از راست‌چین بودن کل نوار کنترل */
+        }
+
+        .search-filter-section {
+            display: flex;
+            gap: 15px; /* فاصله بین جستجو و فیلتر */
+            justify-content: flex-end; /* قرار گرفتن جستجو و فیلتر در سمت راست داخل بخش خود */
+            flex-wrap: wrap; /* Allow items to wrap in smaller screens */
+        }
+
+        .search-box, .filter-dropdown-box { /* کلاس جدید برای dropdown */
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-box input[type="text"] {
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            outline: none;
+            flex-grow: 1;
+            text-align: right; /* متن ورودی راست‌چین */
+            font-family: 'Vazirmatn', sans-serif; /* اطمینان از اعمال فونت */
+        }
+
+        .search-box button {
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-family: 'Vazirmatn', sans-serif; /* اطمینان از اعمال فونت */
+        }
+
+        .search-box button:hover {
+            background-color: var(--dark-green);
+        }
+
+        .filter-dropdown-box select {
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            outline: none;
+            background-color: transparent; /* برای حفظ ظاهر شفاف */
+            appearance: none; /* حذف استایل پیش‌فرض مرورگر برای دراپ‌داون */
+            cursor: pointer;
+            font-family: 'Vazirmatn', sans-serif; /* اطمینان از اعمال فونت */
+            direction: rtl; /* برای راست‌چین کردن متن داخل دراپ‌داون */
+            text-align: right; /* برای راست‌چین کردن متن داخل دراپ‌داون */
+            padding-left: 30px; /* برای ایجاد فضا برای آیکون فلش سفارشی */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%2328a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>'); /* آیکون فلش سبز رنگ */
+            background-repeat: no-repeat;
+            background-position: left 10px center; /* قرار دادن آیکون در سمت چپ */
+            background-size: 16px;
+        }
+
+
+        .total-proposals p, .total-articles p, .total-researchers p {
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #555;
+            font-family: 'Vazirmatn', sans-serif; /* اطمینان از اعمال فونت */
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            background-color: #fff;
+        }
+
+        .proposals-table, .articles-table, .researchers-table { /* اضافه شدن articles-table و researchers-table */
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .proposals-table th,
+        .proposals-table td,
+        .researchers-table th,
+        .researchers-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: right; /* راست‌چین برای طرح‌های پژوهشی و پژوهشگران */
+        }
+
+        .articles-table {
+            direction: ltr !important; /* اعمال LTR برای کل جدول مقالات */
+        }
+
+        .articles-table th,
+        .articles-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left; /* چپ‌چین برای مقالات */
+            direction: ltr; /* جهت نوشتار چپ به راست برای محتوای سلول مقالات */
+        }
+
+        .proposals-table th, .articles-table th, .researchers-table th { /* اعمال مشترک */
+            background-color: var(--primary-green);
+            color: white;
+            font-weight: 700;
+            font-size: 1em;
+            white-space: nowrap; /* جلوگیری از شکستن خط عنوان ستون */
+        }
+
+        .proposals-table td, .articles-table td, .researchers-table td { /* اعمال مشترک */
+            background-color: #fefefe;
+            vertical-align: middle;
+            font-size: 0.95em;
+        }
+
+        .proposals-table tbody tr:hover td, .articles-table tbody tr:hover td, .researchers-table tbody tr:hover td { /* اعمال مشترک */
+            background-color: #f5f5f5;
+        }
+
+        /* جزئیات دکمه (آیکون چشم) */
+        .details-button {
+            background-color: transparent; /* پس‌زمینه شفاف */
+            border: none;
+            cursor: pointer;
+            padding: 5px; /* کمی پدینگ برای ناحیه کلیک */
+            transition: all 0.3s ease;
+            display: inline-flex; /* برای تراز کردن SVG */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .details-button:hover {
+            opacity: 0.7; /* کمی شفافیت در هاور */
+        }
+
+        .details-button svg {
+            width: 24px; /* اندازه آیکون */
+            height: 24px;
+            color: #007bff; /* رنگ آبی برای آیکون چشم */
+            stroke: #007bff; /* رنگ stroke برای آیکون چشم */
+            fill: none;
+        }
+
+        /* Link Icon for Articles Table */
+        .article-link-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .article-link-button:hover {
+            opacity: 0.7;
+        }
+
+        .article-link-button svg {
+            width: 20px; /* اندازه آیکون لینک */
+            height: 20px;
+            color: #007bff; /* رنگ آبی برای آیکون لینک */
+            stroke: #007bff;
+            fill: none;
+        }
+
+        /* Status and Level Cards */
+        .status-card {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .status-card.active-status {
+            background-color: #d4edda; /* light green */
+            color: #155724; /* dark green */
+        }
+
+        .status-card.inactive-status {
+            background-color: #f8d7da; /* light red */
+            color: #721c24; /* dark red */
+        }
+
+        .level-card {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+            border: 1px solid;
+        }
+
+        .level-card.intern-level {
+            background-color: #e2e6ea; /* light gray */
+            color: #383d41; /* dark gray */
+            border-color: #dae0e5;
+        }
+
+        .level-card.senior-level {
+            background-color: #fff3cd; /* light gold */
+            color: #856404; /* dark gold */
+            border-color: #ffeeba;
+        }
+
+        /* Help icon button style */
+        .help-icon-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0 5px;
+            vertical-align: middle;
+            color: white; /* Changed to white for better visibility */
+            transition: color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .help-icon-button:hover {
+            color: #f0f0f0; /* Slightly darker white on hover */
+        }
+        .help-icon-button svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2;
+        }
+
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 25px;
+            gap: 10px;
+            padding-bottom: 20px;
+            font-family: 'Vazirmatn', sans-serif; /* اطمینان از اعمال فونت */
+        }
+
+        .pagination-button {
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-family: 'Vazirmatn', sans-serif; /* اطمینان از اعمال فونت */
+        }
+
+        .pagination-button:hover:not(:disabled) {
+            background-color: var(--dark-green);
+        }
+
+        .pagination-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            font-size: 1.1em;
+            color: #555;
+            font-weight: 500;
+            font-family: 'Vazirmatn', sans-serif; /* اطمینان از اعمال فونت */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-end; /* راست‌چین کردن در موبایل */
+                text-align: right;
+            }
+
+            .header-top-row {
+                flex-direction: column;
+                align-items: flex-end;
+                text-align: right; /* تراز راست برای متن‌ها */
+                width: 100%; /* اطمینان از عرض کامل */
+            }
+
+            .main-karnama-title {
+                margin-bottom: 5px;
+                text-align: right; /* تراز راست */
+                width: 100%; /* اضافه شد: اشغال عرض کامل در موبایل */
+            }
+
+            .cotar-tagline-container {
+                text-align: right; /* در موبایل تگ‌لاین هم راست‌چین باشد */
+                width: 100%; /* اطمینان از عرض کامل */
+            }
+
+            .cotar-tagline {
+                text-align: right; /* تراز راست */
+            }
+
+            .alert {
+                width: 100%;
+                text-align: right;
+            }
+
+            .tabs-navigation {
+                justify-content: flex-start; /* تب‌ها به سمت راست (در RTL، flex-start به معنای راست است) */
+                overflow-x: auto;
+                width: 100%; /* اضافه شد: اطمینان از عرض کامل برای نوار تب‌ها در موبایل */
+                padding: 0 15px; /* پدینگ کمتر در موبایل */
+            }
+
+            .tab-button {
+                flex-shrink: 0; /* جلوگیری از کوچک شدن دکمه‌های تب */
+            }
+
+            .controls-bar {
+                flex-direction: column; /* در موبایل عمودی شوند */
+                align-items: flex-end; /* و راست‌چین باشند */
+                gap: 15px;
+            }
+
+            .search-filter-section {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .search-box, .filter-dropdown-box {
+                width: 100%;
+            }
+
+            .total-proposals, .total-articles, .total-researchers {
+                width: 100%;
+                text-align: right; /* راست‌چین کردن */
+                margin-right: 0;
+            }
+
+            .proposals-table th,
+            .proposals-table td,
+            .researchers-table th,
+            .researchers-table td {
+                padding: 10px;
+                font-size: 0.85em;
+            }
+
+            /* Articles table specific responsive adjustments */
+            .articles-table th,
+            .articles-table td {
+                text-align: left; /* حفظ چپ‌چین در موبایل */
+            }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none; /* این خط را بدون !important نگه می‌داریم تا جاوااسکریپت بتواند آن را override کند */
+            position: fixed;
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto; /* Enable vertical scroll if content overflows */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s forwards;
+            padding: 20px; /* اضافه شد: پدینگ از بالا و پایین صفحه برای فاصله دادن مودال */
+            box-sizing: border-box; /* اطمینان از اینکه پدینگ به عرض/ارتفاع اضافه نشود */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 80%; /* تنظیم عرض مودال */
+            max-width: 800px; /* حداکثر عرض */
+            animation: slideIn 0.3s forwards;
+            overflow: hidden; /* برای گرد کردن گوشه‌های فرزندان */
+            direction: rtl; /* محتوای مودال راست‌چین */
+            text-align: right; /* متن داخلی مودال راست‌چین */
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background-color: var(--primary-green);
+            color: white;
+        }
+        
+        .modal-header h2 { /* استایل جدید برای عنوان هدر مودال */
+            margin: 0;
+            font-size: 1.2em; /* اندازه فونت متعادل‌تر */
+            font-weight: 700;
+            font-family: 'Vazirmatn', sans-serif; /* اطمینان از اعمال فونت */
+        }
+
+
+        .modal-header .close-button {
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-left: 15px; /* فاصله از عنوان در سمت چپ */
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .modal-header .close-button:hover,
+        .modal-header .close-button:focus {
+            color: #ccc;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* دو ستون برای اطلاعات */
+            gap: 20px 30px; /* فاصله بین ردیف‌ها و ستون‌ها */
+            color: var(--text-color);
+        }
+
+        .modal-body .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .modal-body .detail-label {
+            font-weight: 700;
+            color: var(--primary-green);
+            font-size: 1.05em;
+        }
+
+        .modal-body .detail-value {
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        /* Full width for specific items */
+        .modal-body .detail-item.full-width {
+            grid-column: 1 / -1; /* اشغال کامل عرض */
+        }
+
+        /* استایل برای عنوان جدید مجریان و همکاران */
+        .section-heading {
+            grid-column: 1 / -1; /* اشغال کامل عرض */
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--primary-green);
+            font-size: 1.2em;
+            text-align: right;
+        }
+
+        /* Collaborators Table within Modal */
+        .collaborators-table-container {
+            grid-column: 1 / -1; /* اشغال کامل عرض */
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            overflow-x: auto; /* Added for horizontal scroll */
+        }
+
+        .collaborators-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        .collaborators-table th,
+        .collaborators-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .collaborators-table th {
+            background-color: #e9ecef; /* پس‌زمینه خاکستری روشن برای هدر جدول داخلی */
+            color: #495057;
+            font-weight: 700;
+            font-size: 0.95em;
+        }
+
+        .collaborators-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Specific modal content for proposals and researchers */
+        .modal-proposal-details,
+        .modal-researcher-details {
+            display: contents; /* Allows grid to apply to children directly */
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                max-height: 90vh; /* محدود کردن ارتفاع در موبایل */
+                overflow-y: auto; /* فعال کردن اسکرول عمودی */
+            }
+            .modal-body {
+                grid-template-columns: 1fr; /* یک ستون در موبایل */
+                gap: 15px;
+            }
+            .modal-header, .modal-footer {
+                padding: 15px;
+            }
+            .modal-header h2 {
+                font-size: 1.1em; /* کمی کوچتر در موبایل */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <header class="header">
+            <div class="header-top-row">
+                <h1 class="main-karnama-title">کارنمای کوتار</h1>
+                <div class="cotar-tagline-container">
+                    <p class="cotar-tagline">مرکز تحقیقات میان‌رشته‌ای کاربردی ارتوپدی</p>
+                </div>
+            </div>
+            <div class="header-alert-box-wrapper">
+                <div class="alert">
+                    <p>داده‌های نمایش‌داده‌شده در این صفحه بر اساس خروجی‌های پژوهشیار و اسکوپوس می‌باشد. با این حال، در صورت مشاهده هر گونه اشتباه، لطفا آن را با حساب تلگرام یا بله پشتیبانی کوتار به نشانی COTAR_Support در میان بگذارید.</p>
+                    <!-- آیکون علامت تعجب حذف شد -->
+                </div>
+            </div>
+        </header>
+
+        <nav class="tabs-navigation">
+            <button class="tab-button active" data-tab="researchers">پژوهشگران</button>
+            <button class="tab-button" data-tab="proposals">طرح‌های پژوهشی</button>
+            <button class="tab-button" data-tab="articles">مقالات</button>
+        </nav>
+
+        <div class="tab-content" id="proposals-tab">
+            <div class="controls-bar">
+                <div class="search-filter-section">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="جستجو در طرح‌ها...">
+                        <button id="searchButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                    </div>
+                    <div class="filter-dropdown-box">
+                        <select id="statusFilterDropdown">
+                            <option value="">همه وضعیت‌ها</option>
+                            </select>
+                    </div>
+                </div>
+                <div class="total-proposals">
+                    <p id="totalProposalsCount">نمایش ۰ طرح</p>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="proposals-table">
+                    <thead>
+                        <tr>
+                            <th>عنوان</th>
+                            <th>استاد راهنما</th>
+                            <th>تاریخ تصویب</th>
+                            <th>وضعیت</th>
+                            <th>مشاهده</th>
+                        </tr>
+                    </thead>
+                    <tbody id="proposalsTableBody">
+                        <tr><td colspan="5" style="text-align: center;">در حال بارگذاری اطلاعات...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button id="prevPage" class="pagination-button">قبلی</button>
+                <span id="pageInfo" class="page-info">صفحه ۱ از ۱</span>
+                <button id="nextPage" class="pagination-button">بعدی</button>
+            </div>
+        </div>
+
+        <div class="tab-content" id="articles-tab">
+            <div class="controls-bar" style="direction: ltr; text-align: left;">
+                <div class="search-filter-section">
+                    <div class="search-box">
+                        <input type="text" id="articleSearchInput" placeholder="Search articles..." style="text-align: left;">
+                        <button id="articleSearchButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                    </div>
+                    </div>
+                <div class="total-articles" style="margin-left: 20px;">
+                    <p id="totalArticlesCount">Displaying 0 articles</p>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="articles-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Year</th>
+                            <th>Author(s)</th>
+                            <th>Journal</th>
+                            <th>Cited by</th>
+                            <th>Type</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody id="articlesTableBody">
+                        <tr><td colspan="7" style="text-align: center; direction: ltr;">Loading articles...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination" style="direction: ltr;">
+                <button id="articlePrevPage" class="pagination-button">Previous</button>
+                <span id="articlePageInfo" class="page-info">Page 1 of 1</span>
+                <button id="articleNextPage" class="pagination-button">Next</button>
+            </div>
+        </div>
+
+        <div class="tab-content active" id="researchers-tab">
+            <div class="controls-bar">
+                <div class="search-filter-section">
+                    <div class="search-box">
+                        <input type="text" id="researcherSearchInput" placeholder="جستجو در پژوهشگران...">
+                        <button id="researcherSearchButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                    </div>
+                    <div class="filter-dropdown-box">
+                        <select id="researcherStatusFilterDropdown">
+                            <option value="">همه وضعیت‌ها</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown-box">
+                        <select id="researcherLevelFilterDropdown">
+                            <option value="">همه سطوح</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="total-researchers">
+                    <p id="totalResearchersCount">نمایش ۰ پژوهشگر</p>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="researchers-table">
+                    <thead>
+                        <tr>
+                            <th>نام پژوهشگر</th>
+                            <th>وضعیت <button class="help-icon-button" data-help-type="status" title="توضیحات وضعیت پژوهشگر"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-help-circle"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></button></th>
+                            <th>سطح <button class="help-icon-button" data-help-type="level" title="توضیحات سطح پژوهشگر"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-help-circle"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></button></th>
+                            <th>تعداد طرح‌ها</th>
+                            <th>تعداد مقالات</th>
+                            <th>مشاهده</th>
+                        </tr>
+                    </thead>
+                    <tbody id="researchersTableBody">
+                        <tr><td colspan="6" style="text-align: center;">در حال بارگذاری اطلاعات...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button id="researcherPrevPage" class="pagination-button">قبلی</button>
+                <span id="researcherPageInfo" class="page-info">صفحه ۱ از ۱</span>
+                <button id="researcherNextPage" class="pagination-button">بعدی</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="projectDetailsModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalHeaderTitle">جزئیات</h2>
+                <button class="close-button" id="closeModalButton">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Content for Proposals -->
+                <div id="modalProposalDetails" class="modal-proposal-details">
+                    <div class="detail-item full-width">
+                        <span class="detail-label">عنوان:</span>
+                        <span class="detail-value" id="modalTitle"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">کد رهگیری:</span>
+                        <span class="detail-value" id="modalTrackingCode"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">گروه مطالعات:</span>
+                        <span class="detail-value" id="modalStudyGroup"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">استاد راهنما:</span>
+                        <span class="detail-value" id="modalSupervisor"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">تاریخ تصویب:</span>
+                        <span class="detail-value" id="modalApprovalDate"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">وضعیت:</span>
+                        <span class="detail-value" id="modalStatus"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">مرکز هدف:</span>
+                        <span class="detail-value" id="modalTargetCenter"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">تاریخ خاتمه:</span>
+                        <span class="detail-value" id="modalEndDate"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">پژوهشگر مسئول:</span>
+                        <span class="detail-value" id="modalResponsibleResearcher"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">تاریخ شروع قرارداد:</span>
+                        <span class="detail-value" id="modalContractStartDate"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">تاریخ پایان قرارداد:</span>
+                        <span class="detail-value" id="modalContractEndDate"></span>
+                    </div>
+                    
+                    <h3 class="section-heading">مجریان و همکاران طرح:</h3>
+                    <div class="collaborators-table-container full-width">
+                        <table class="collaborators-table">
+                            <thead>
+                                <tr>
+                                    <th>نام و نام‌خانوادگی</th>
+                                    <th>نقش</th>
+                                </tr>
+                            </thead>
+                            <tbody id="collaboratorsTableBody">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Content for Researchers -->
+                <div id="modalResearcherDetails" class="modal-researcher-details" style="display: none;">
+                    <div class="detail-item full-width">
+                        <span class="detail-label">نام پژوهشگر:</span>
+                        <span class="detail-value" id="modalResearcherName"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">وضعیت:</span>
+                        <span class="detail-value" id="modalResearcherStatus"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">سطح:</span>
+                        <span class="detail-value" id="modalResearcherLevel"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">ایمیل:</span> <!-- New Email field -->
+                        <span class="detail-value" id="modalResearcherEmail"></span>
+                    </div>
+                    
+                    <h3 class="section-heading">طرح‌های پژوهشی:</h3>
+                    <div class="collaborators-table-container full-width">
+                        <table class="collaborators-table">
+                            <thead>
+                                <tr>
+                                    <th>کد رهگیری</th>
+                                    <th>عنوان</th>
+                                    <th>تاریخ تصویب</th>
+                                    <th>وضعیت</th> <!-- Added Status column header -->
+                                </tr>
+                            </thead>
+                            <tbody id="modalResearcherProposalsTableBody">
+                                <!-- Data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="section-heading">مقالات:</h3>
+                    <div class="collaborators-table-container full-width">
+                        <table class="collaborators-table">
+                            <thead>
+                                <tr>
+                                    <th>عنوان</th>
+                                    <th>مجله</th>
+                                    <th>سال چاپ</th>
+                                    <th>مشاهده</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalResearcherArticlesTableBody">
+                                <!-- Data will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- New Content for Help Messages -->
+                <div id="modalHelpContent" style="display: none; grid-column: 1 / -1; text-align: right; padding: 15px;">
+                    <p id="helpTextContent"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Start the animation on window load.
+        window.onload = () => {
+            // Proposal tab elements
+            const proposalsTableBody = document.getElementById('proposalsTableBody');
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const statusFilterDropdown = document.getElementById('statusFilterDropdown');
+            const totalProposalsCount = document.getElementById('totalProposalsCount');
+            const prevPageButton = document.getElementById('prevPage');
+            const nextPageButton = document.getElementById('nextPage');
+            const pageInfo = document.getElementById('pageInfo');
+
+            // Article tab elements
+            const articlesTableBody = document.getElementById('articlesTableBody');
+            const articleSearchInput = document.getElementById('articleSearchInput');
+            const articleSearchButton = document.getElementById('articleSearchButton');
+            const totalArticlesCount = document.getElementById('totalArticlesCount');
+            const articlePrevPageButton = document.getElementById('articlePrevPage');
+            const articleNextPageButton = document.getElementById('articleNextPage');
+            const articlePageInfo = document.getElementById('articlePageInfo');
+
+            // Researcher tab elements (NEW)
+            const researchersTableBody = document.getElementById('researchersTableBody');
+            const researcherSearchInput = document.getElementById('researcherSearchInput');
+            const researcherSearchButton = document.getElementById('researcherSearchButton');
+            const researcherStatusFilterDropdown = document.getElementById('researcherStatusFilterDropdown');
+            const researcherLevelFilterDropdown = document.getElementById('researcherLevelFilterDropdown');
+            const totalResearchersCount = document.getElementById('totalResearchersCount');
+            const researcherPrevPageButton = document.getElementById('researcherPrevPage');
+            const researcherNextPageButton = document.getElementById('researcherNextPage'); 
+            const researcherPageInfo = document.getElementById('researcherPageInfo');
+
+
+            // Modal elements
+            const projectDetailsModal = document.getElementById('projectDetailsModal');
+            const closeModalButton = document.getElementById('closeModalButton');
+            const modalHeaderTitle = document.getElementById('modalHeaderTitle'); // New for dynamic modal title
+
+            // Proposal Modal Details
+            const modalProposalDetails = document.getElementById('modalProposalDetails');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalTrackingCode = document.getElementById('modalTrackingCode');
+            const modalStudyGroup = document.getElementById('modalStudyGroup');
+            const modalSupervisor = document.getElementById('modalSupervisor');
+            const modalApprovalDate = document.getElementById('modalApprovalDate');
+            const modalStatus = document.getElementById('modalStatus');
+            const modalTargetCenter = document.getElementById('modalTargetCenter');
+            const modalEndDate = document.getElementById('modalEndDate');
+            const modalResponsibleResearcher = document.getElementById('modalResponsibleResearcher');
+            const modalContractStartDate = document.getElementById('modalContractStartDate');
+            const modalContractEndDate = document.getElementById('modalContractEndDate');
+            const collaboratorsTableBody = document.getElementById('collaboratorsTableBody');
+
+            // Researcher Modal Details (NEW)
+            const modalResearcherDetails = document.getElementById('modalResearcherDetails');
+            const modalResearcherName = document.getElementById('modalResearcherName');
+            const modalResearcherStatus = document.getElementById('modalResearcherStatus');
+            const modalResearcherLevel = document.getElementById('modalResearcherLevel');
+            const modalResearcherEmail = document.getElementById('modalResearcherEmail'); // New Email element
+            const modalResearcherProposalsTableBody = document.getElementById('modalResearcherProposalsTableBody'); // New
+            const modalResearcherArticlesTableBody = document.getElementById('modalResearcherArticlesTableBody'); // New
+
+
+            // Help Modal Elements (NEW)
+            const modalHelpContent = document.getElementById('modalHelpContent');
+            const helpTextContent = document.getElementById('helpTextContent');
+
+
+            let allProposals = [];
+            let filteredProposals = [];
+            let allArticles = [];
+            let filteredArticles = [];
+            let allResearchers = []; // New: To store all researchers data
+            let filteredResearchers = []; // New: To store filtered researchers data
+            
+            const rowsPerPage = 10;
+            let currentPageProposals = 1;
+            let currentPageArticles = 1;
+            let currentPageResearchers = 1; // New: Current page for researchers
+
+            // Default active tab on load
+            const defaultTab = 'researchers'; // Set 'researchers' as default
+            let currentActiveTab = defaultTab;
+
+
+            // تابع کمکی برای تبدیل اعداد انگلیسی به فارسی
+            function convertToPersianNumbers(text) {
+                if (text === null || text === undefined) return '';
+                const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+                return String(text).replace(/[0-9]/g, (d) => persianDigits[parseInt(d)]);
+            }
+
+            // تابع کمکی برای فرمت و تبدیل تاریخ
+            const formatAndConvertDate = (dateString) => {
+                if (typeof dateString === 'string' && dateString.startsWith('Date(') && dateString.endsWith(')')) {
+                    let innerContentToParse = '';
+                    try {
+                        innerContentToParse = dateString.substring(5, dateString.length - 1);
+                        const parts = innerContentToParse.split(',');
+                        if (parts.length === 3) {
+                            const year = parts[0].trim();
+                            const month = parseInt(parts[1].trim()) + 1;
+                            const day = parts[2].trim();
+                            return convertToPersianNumbers(`${year}/${month}/${day}`);
+                        }
+                    } catch (e) {
+                        console.error('Error parsing date:', dateString, e);
+                        return 'فرمت نامعتبر';
+                    }
+                }
+                return convertToPersianNumbers(dateString || 'نامشخص');
+            };
+
+            /**
+             * Handles parsing CSV text into an array of objects.
+             * Assumes headers are on the first non-empty line and data follows.
+             * Handles quoted fields and escaped quotes ("").
+             * @param {string} csvText - The raw CSV string.
+             * @returns {{headers: string[], data: object[]}} An object containing headers and parsed data.
+             */
+            function parseCsvManual(csvText) {
+                const allLines = csvText.split(/\r?\n/); // Split by new line, keep empty lines for now
+                let headerIndex = -1;
+                for (let i = 0; i < allLines.length; i++) {
+                    if (allLines[i].trim() !== '') {
+                        headerIndex = i;
+                        break;
+                    }
+                }
+
+                if (headerIndex === -1 || allLines.length <= headerIndex) {
+                    console.error('CSV Parser - No headers found or not enough data lines in CSV.');
+                    return { headers: [], data: [] };
+                }
+
+                const headerLine = allLines[headerIndex];
+                const headers = [];
+                let inQuoteHeader = false;
+                let currentFieldHeader = '';
+                for (let i = 0; i < headerLine.length; i++) {
+                    const char = headerLine[i];
+                    if (char === '"') {
+                        inQuoteHeader = !inQuoteHeader;
+                        if (inQuoteHeader && i + 1 < headerLine.length && headerLine[i + 1] === '"') {
+                            currentFieldHeader += '"';
+                            i++;
+                        }
+                    } else if (char === ',' && !inQuoteHeader) {
+                        headers.push(currentFieldHeader.trim());
+                        currentFieldHeader = '';
+                    } else {
+                        currentFieldHeader += char;
+                    }
+                }
+                headers.push(currentFieldHeader.trim());
+
+                const dataRows = allLines.slice(headerIndex + 1).filter(line => line.trim() !== '');
+
+                const parsedData = dataRows.map(line => {
+                    const values = [];
+                    let inQuote = false;
+                    let currentField = '';
+                    for (let i = 0; i < line.length; i++) {
+                        const char = line[i];
+                        if (char === '"') {
+                            inQuote = !inQuote;
+                            if (inQuote && i + 1 < line.length && line[i + 1] === '"') {
+                                currentField += '"';
+                                i++;
+                            }
+                        } else if (char === ',' && !inQuote) {
+                            values.push(currentField.trim());
+                            currentField = '';
+                        } else {
+                            currentField += char;
+                        }
+                    }
+                    values.push(currentField.trim());
+
+                    const rowData = {};
+                    headers.forEach((header, index) => {
+                        rowData[header] = values[index] !== undefined ? values[index] : '';
+                    });
+                    return rowData;
+                });
+                return { headers, data: parsedData };
+            }
+
+            // تابع برای واکشی داده‌ها از گوگل شیت (طرح‌های پژوهشی)
+            async function fetchProposals() {
+                const spreadsheetId = '2PACX-1vSFGi0bSq-BtfuqMm8v2qgAV4hVrM2FLQx4_r4f-We71fIhhioV29RpcQNTb-LwldWdueIQrRfIoY0s';
+                const gid = '462279769';
+                const apiUrl = `https://docs.google.com/spreadsheets/d/e/${spreadsheetId}/pub?gid=${gid}&single=true&output=csv`;
+
+                try {
+                    const response = await fetch(apiUrl, { mode: 'cors' });
+                    if (!response.ok) {
+                        let errorMessage = `HTTP error! status: ${response.status}. لطفاً مطمئن شوید فایل گوگل شیت 'Proposals' 'Public' (منتشر شده در وب) است و دسترسی لازم برای خواندن آن وجود دارد و URL صحیح است.`;
+                        throw new Error(errorMessage);
+                    }
+                    const csvText = await response.text();
+                    const { data: parsedData } = parseCsvManual(csvText);
+                    
+                    allProposals = parsedData.filter(proposal => {
+                        return proposal['تاریخ تصویب'] && String(proposal['تاریخ تصویب']).trim() !== '';
+                    });
+                    populateStatusFilterDropdown();
+                    filteredProposals = [...allProposals];
+                    renderTable();
+
+                } catch (error) {
+                    console.error('Error fetching data from Google Sheet for proposals:', error);
+                    proposalsTableBody.innerHTML = `<tr><td colspan="5" style="color: red; text-align: center;">خطا در بارگذاری اطلاعات طرح‌های پژوهشی: ${error.message}</td></tr>`;
+                }
+            }
+
+            // تابع برای پر کردن لیست کشویی وضعیت
+            function populateStatusFilterDropdown() {
+                const uniqueStatuses = new Set();
+                allProposals.forEach(proposal => {
+                    if (proposal['موقعیت در سامانه']) {
+                        uniqueStatuses.add(proposal['موقعیت در سامانه'].replace('معاونت', '').trim());
+                    }
+                });
+
+                statusFilterDropdown.innerHTML = '<option value="">همه وضعیت‌ها</option>';
+                Array.from(uniqueStatuses).sort().forEach(status => {
+                    if (status) {
+                        const option = document.createElement('option');
+                        option.value = status;
+                        option.textContent = status;
+                        statusFilterDropdown.appendChild(option);
+                    }
+                });
+            }
+
+            // تابع برای نمایش داده‌ها در جدول (طرح‌های پژوهشی)
+            function renderTable() {
+                proposalsTableBody.innerHTML = '';
+
+                const startIndex = (currentPageProposals - 1) * rowsPerPage;
+                const endIndex = startIndex + rowsPerPage;
+                const proposalsToDisplay = filteredProposals.slice(startIndex, endIndex);
+
+                if (proposalsToDisplay.length === 0) {
+                    proposalsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">هیچ طرحی یافت نشد.</td></tr>';
+                    totalProposalsCount.textContent = convertToPersianNumbers(`نمایش ۰ طرح`);
+                    pageInfo.textContent = convertToPersianNumbers(`صفحه ۰ از ۰`);
+                    prevPageButton.disabled = true;
+                    nextPageButton.disabled = true;
+                    return;
+                }
+
+                proposalsToDisplay.forEach((proposal, index) => {
+                    const row = proposalsTableBody.insertRow();
+                    
+                    const title = proposal['عنوان فارسی'] || 'نامشخص';
+                    const supervisor = proposal['حساب پژوهشیار'] || 'نامشخص';
+                    let status = (proposal['موقعیت در سامانه'] || 'نامشخص').replace('معاونت', '').trim();
+
+                    let approvalDate = proposal['تاریخ تصویب'] || 'نامشخص';
+                    if (typeof approvalDate === 'string' && approvalDate.startsWith('Date(') && approvalDate.endsWith(')')) {
+                        let dateContentToParse = '';
+                        try {
+                            dateContentToParse = approvalDate.substring(5, approvalDate.length - 1);
+                            const parts = dateContentToParse.split(',');
+                            if (parts.length === 3) {
+                                const year = parts[0].trim();
+                                const month = parseInt(parts[1].trim()) + 1;
+                                const day = parts[2].trim();
+                                approvalDate = `${year}/${month}/${day}`;
+                            }
+                        } catch (e) {
+                            console.error('Error parsing date for display:', approvalDate, e);
+                            approvalDate = 'فرمت نامعتبر';
+                        }
+                    }
+
+                    row.innerHTML = `
+                        <td>${title}</td>
+                        <td>${supervisor}</td>
+                        <td>${convertToPersianNumbers(approvalDate)}</td>
+                        <td>${status}</td>
+                        <td>
+                            <button class="details-button" title="مشاهده جزئیات" data-index="${index}" data-type="proposal">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </td>
+                    `;
+                });
+
+                // اضافه کردن event listener به دکمه‌های مشاهده جدید
+                document.querySelectorAll('.details-button[data-type="proposal"]').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const index = parseInt(event.currentTarget.dataset.index);
+                        const proposal = filteredProposals[index];
+                        showDetailsModal('proposal', proposal);
+                    });
+                });
+
+                updatePaginationProposals();
+                totalProposalsCount.textContent = convertToPersianNumbers(`نمایش ${filteredProposals.length} طرح`);
+            }
+
+            // تابع برای بروزرسانی کنترل‌های صفحه‌بندی (طرح‌های پژوهشی)
+            function updatePaginationProposals() {
+                const totalPages = Math.ceil(filteredProposals.length / rowsPerPage);
+                pageInfo.textContent = convertToPersianNumbers(`صفحه ${currentPageProposals} از ${totalPages}`);
+                prevPageButton.disabled = currentPageProposals === 1;
+                nextPageButton.disabled = currentPageProposals === totalPages || totalPages === 0;
+            }
+
+            // تابع برای فیلتر کردن داده‌ها (طرح‌های پژوهشی)
+            function filterProposals() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const selectedStatus = statusFilterDropdown.value.toLowerCase();
+
+                filteredProposals = allProposals.filter(proposal => {
+                    const title = (proposal['عنوان فارسی'] || '').toLowerCase();
+                    const supervisor = (proposal['حساب پژوهشیار'] || '').toLowerCase();
+                    let proposalStatus = (proposal['موقعیت در سامانه'] || '').replace('معاونت', '').trim().toLowerCase();
+
+                    const matchesSearchTerm = title.includes(searchTerm) ||
+                                                supervisor.includes(searchTerm) ||
+                                                proposalStatus.includes(searchTerm);
+                    
+                    const matchesStatusFilter = selectedStatus === '' || proposalStatus === selectedStatus;
+
+                    return matchesSearchTerm && matchesStatusFilter;
+                });
+                currentPageProposals = 1;
+                renderTable();
+            }
+            
+            // رویداد برای دکمه صفحه قبلی (طرح‌های پژوهشی)
+            prevPageButton.addEventListener('click', () => {
+                if (currentPageProposals > 1) {
+                    currentPageProposals--;
+                    renderTable();
+                }
+            });
+
+            // رویداد برای دکمه صفحه بعدی (طرح‌های پژوهشی)
+            nextPageButton.addEventListener('click', () => {
+                const totalPages = Math.ceil(filteredProposals.length / rowsPerPage);
+                if (currentPageProposals < totalPages) {
+                    currentPageProposals++;
+                    renderTable();
+                }
+            });
+
+            // رویداد برای جستجو با کلید Enter (طرح‌های پژوهشی)
+            searchInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    filterProposals();
+                }
+            });
+
+            // رویداد برای دکمه جستجو (طرح‌های پژوهشی)
+            searchButton.addEventListener('click', filterProposals);
+
+            // رویداد برای تغییر مقدار لیست کشویی وضعیت (طرح‌های پژوهشی)
+            statusFilterDropdown.addEventListener('change', filterProposals);
+
+
+            // --- Functions for Articles Tab ---
+
+            // تابع برای واکشی داده‌ها از گوگل شیت (مقالات)
+            async function fetchArticles() {
+                const spreadsheetId = '2PACX-1vSFGi0bSq-BtfuqMm8v2qgAV4hVrM2FLQx4_r4f-We71fIhhioV29RpcQNTb-LwldWdueIQrRfIoY0s';
+                const gid = '1358107488'; 
+                const apiUrl = `https://docs.google.com/spreadsheets/d/e/${spreadsheetId}/pub?gid=${gid}&single=true&output=csv`;
+
+                try {
+                    const response = await fetch(apiUrl, { mode: 'cors' });
+                    if (!response.ok) {
+                        let errorMessage = `HTTP error! status: ${response.status}. لطفاً مطمئن شوید شیت 'Publications' به درستی در وب به صورت CSV منتشر شده است. (مسیر: File > Share > Publish to web)`;
+                        throw new Error(errorMessage);
+                    }
+                    const csvText = await response.text();
+                    const { data: parsedData } = parseCsvManual(csvText);
+                    
+                    allArticles = parsedData;
+                    filteredArticles = [...allArticles];
+                    renderArticlesTable();
+
+                } catch (error) {
+                    console.error('Error fetching articles data:', error);
+                    articlesTableBody.innerHTML = `<tr><td colspan="7" style="color: red; text-align: center; direction: ltr;">Error loading articles: ${error.message}. لطفاً مطمئن شوید شیت 'Publications' به درستی در وب به صورت CSV منتشر شده است.</td></tr>`;
+                }
+            }
+
+            // تابع برای نمایش داده‌ها در جدول (مقالات)
+            function renderArticlesTable() {
+                articlesTableBody.innerHTML = '';
+
+                const startIndex = (currentPageArticles - 1) * rowsPerPage;
+                const endIndex = startIndex + rowsPerPage;
+                const articlesToDisplay = filteredArticles.slice(startIndex, endIndex);
+
+                if (articlesToDisplay.length === 0) {
+                    articlesTableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; direction: ltr;">No articles found.</td></tr>';
+                    totalArticlesCount.textContent = `Displaying 0 articles`;
+                    articlePageInfo.textContent = `Page 0 of 0`;
+                    articlePrevPageButton.disabled = true;
+                    articleNextPageButton.disabled = true;
+                    return;
+                }
+
+                const columnDefinitions = [
+                    { key: 'Title', header: 'Title' },
+                    { key: 'Year', header: 'Year', convertNum: true },
+                    { key: 'Authors', header: 'Author(s)' },
+                    { key: 'Source title', header: 'Journal' },
+                    { key: 'Cited by', header: 'Cited by', convertNum: true },
+                    { key: 'Document Type', header: 'Type' },
+                    { key: 'Link', header: 'Link', isLink: true }
+                ];
+
+                articlesToDisplay.forEach(article => {
+                    const row = articlesTableBody.insertRow();
+                    
+                    columnDefinitions.forEach(col => {
+                        const td = document.createElement('td');
+                        td.style.direction = 'ltr'; // Explicit LTR for cell
+                        td.style.textAlign = 'left'; // Explicit left alignment for cell
+
+                        if (col.isLink) {
+                            const link = article[col.key] || '';
+                            if (link) {
+                                td.innerHTML = `<a href="${link}" target="_blank" class="article-link-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>`;
+                            } else {
+                                td.textContent = 'N/A';
+                            }
+                        } else if (col.convertNum) {
+                            td.textContent = convertToPersianNumbers(article[col.key] || 'N/A');
+                        } else {
+                            td.textContent = article[col.key] || 'N/A';
+                        }
+                        row.appendChild(td);
+                    });
+                    articlesTableBody.appendChild(row);
+                });
+
+                const articlesTableHeaderRow = document.createElement('tr');
+                columnDefinitions.forEach(col => {
+                    const th = document.createElement('th');
+                    th.textContent = col.header;
+                    articlesTableHeaderRow.appendChild(th);
+                });
+                articlesTableBody.previousElementSibling.innerHTML = '';
+                articlesTableBody.previousElementSibling.appendChild(articlesTableHeaderRow);
+
+
+                updatePaginationArticles();
+                totalArticlesCount.textContent = `Displaying ${filteredArticles.length} articles`;
+            }
+
+            // تابع برای بروزرسانی کنترل‌های صفحه‌بندی (مقالات)
+            function updatePaginationArticles() {
+                const totalPages = Math.ceil(filteredArticles.length / rowsPerPage);
+                articlePageInfo.textContent = `Page ${currentPageArticles} of ${totalPages}`;
+                articlePrevPageButton.disabled = currentPageArticles === 1;
+                articleNextPageButton.disabled = currentPageArticles === totalPages || totalPages === 0;
+            }
+
+            // تابع برای فیلتر کردن داده‌ها (مقالات)
+            function filterArticles() {
+                const searchTerm = articleSearchInput.value.toLowerCase();
+                
+                filteredArticles = allArticles.filter(article => {
+                    const title = (article['Title'] || '').toLowerCase();
+                    const authors = (article['Authors'] || '').toLowerCase();
+                    const journal = (article['Source title'] || '').toLowerCase();
+                    const type = (article['Document Type'] || '').toLowerCase();
+
+                    return title.includes(searchTerm) ||
+                           authors.includes(searchTerm) ||
+                           journal.includes(searchTerm) ||
+                           type.includes(searchTerm);
+                });
+                currentPageArticles = 1;
+                renderArticlesTable();
+            }
+
+            // رویداد برای دکمه صفحه قبلی (مقالات)
+            articlePrevPageButton.addEventListener('click', () => {
+                if (currentPageArticles > 1) {
+                    currentPageArticles--;
+                    renderArticlesTable();
+                }
+            });
+
+            // رویداد برای دکمه صفحه بعدی (مقالات)
+            articleNextPageButton.addEventListener('click', () => {
+                const totalPages = Math.ceil(filteredArticles.length / rowsPerPage);
+                if (currentPageArticles < totalPages) {
+                    currentPageArticles++;
+                    renderArticlesTable();
+                }
+            });
+
+            // رویداد برای جستجو با کلید Enter (مقالات)
+            articleSearchInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    filterArticles();
+                }
+            });
+
+            // رویداد برای دکمه جستجو (مقالات)
+            articleSearchButton.addEventListener('click', filterArticles);
+
+            // --- Functions for Researchers Tab (NEW) ---
+
+            async function fetchResearchers() {
+                const spreadsheetId = '2PACX-1vSFGi0bSq-BtfuqMm8v2qgAV4hVrM2FLQx4_r4f-We71fIhhioV29RpcQNTb-LwldWdueIQrRfIoY0s';
+                const gid = '1341762672';
+                const apiUrl = `https://docs.google.com/spreadsheets/d/e/${spreadsheetId}/pub?gid=${gid}&single=true&output=csv`;
+
+                try {
+                    const response = await fetch(apiUrl, { mode: 'cors' });
+                    if (!response.ok) {
+                        let errorMessage = `HTTP error! status: ${response.status}. لطفاً مطمئن شوید فایل گوگل شیت 'Members' 'Public' (منتشر شده در وب) است و دسترسی لازم برای خواندن آن وجود دارد و URL صحیح است.`;
+                        throw new Error(errorMessage);
+                    }
+                    const csvText = await response.text();
+                    const { data: parsedData } = parseCsvManual(csvText);
+                    
+                    // Filter out researchers with empty or "نامشخص" names
+                    allResearchers = parsedData.filter(researcher => {
+                        const name = researcher['Name (Farsi)'];
+                        return name && name.trim() !== '' && name.trim().toLowerCase() !== 'نامشخص';
+                    }).map(researcher => {
+                        const proposals = researcher['Proposals'] ? researcher['Proposals'].split(',').filter(id => id.trim() !== '') : [];
+                        const publications = researcher['Publications'] ? researcher['Publications'].split(',').filter(id => id.trim() !== '') : [];
+                        return {
+                            ...researcher,
+                            numProposals: proposals.length,
+                            numPublications: publications.length,
+                            proposalsCodes: proposals.map(code => code.trim()), // Store as array of trimmed codes
+                            publicationsCodes: publications.map(code => code.trim()) // Store as array of trimmed codes
+                        };
+                    });
+
+                    // Sort by number of proposals in descending order
+                    allResearchers.sort((a, b) => b.numProposals - a.numProposals);
+
+                    populateResearcherFilterDropdowns();
+                    filteredResearchers = [...allResearchers];
+                    renderResearchersTable();
+
+                } catch (error) {
+                    console.error('Error fetching data from Google Sheet for researchers:', error);
+                    researchersTableBody.innerHTML = `<tr><td colspan="6" style="color: red; text-align: center;">خطا در بارگذاری اطلاعات پژوهشگران: ${error.message}</td></tr>`;
+                }
+            }
+
+            function populateResearcherFilterDropdowns() {
+                const uniqueStatuses = new Set();
+                const uniqueLevels = new Set();
+                allResearchers.forEach(researcher => {
+                    if (researcher['Status']) uniqueStatuses.add(researcher['Status'].trim());
+                    if (researcher['Level']) uniqueLevels.add(researcher['Level'].trim());
+                });
+
+                researcherStatusFilterDropdown.innerHTML = '<option value="">همه وضعیت‌ها</option>';
+                Array.from(uniqueStatuses).sort().forEach(status => {
+                    if (status) {
+                        const option = document.createElement('option');
+                        option.value = status;
+                        // Translate status for display
+                        let displayStatus = status;
+                        if (status === 'Active') {
+                            displayStatus = 'فعال';
+                        } else if (status === 'Deactive') {
+                            displayStatus = 'غیرفعال';
+                        }
+                        option.textContent = displayStatus;
+                        researcherStatusFilterDropdown.appendChild(option);
+                    }
+                });
+
+                researcherLevelFilterDropdown.innerHTML = '<option value="">همه سطوح</option>';
+                Array.from(uniqueLevels).sort().forEach(level => {
+                    if (level) {
+                        const option = document.createElement('option');
+                        option.value = level;
+                        // Translate level for display
+                        let displayLevel = level;
+                        if (level === 'Senior') {
+                            displayLevel = 'ارشد';
+                        } else if (level === 'Junior') {
+                            displayLevel = 'کارآموز';
+                        }
+                        option.textContent = displayLevel;
+                        researcherLevelFilterDropdown.appendChild(option);
+                    }
+                });
+            }
+
+            function renderResearchersTable() {
+                researchersTableBody.innerHTML = '';
+
+                const startIndex = (currentPageResearchers - 1) * rowsPerPage;
+                const endIndex = startIndex + rowsPerPage;
+                const researchersToDisplay = filteredResearchers.slice(startIndex, endIndex);
+
+                if (researchersToDisplay.length === 0) {
+                    researchersTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">هیچ پژوهشگری یافت نشد.</td></tr>';
+                    totalResearchersCount.textContent = convertToPersianNumbers(`نمایش ۰ پژوهشگر`);
+                    researcherPageInfo.textContent = convertToPersianNumbers(`صفحه ۰ از ۰`);
+                    researcherPrevPageButton.disabled = true;
+                    researcherNextPageButton.disabled = true;
+                    return;
+                }
+
+                researchersToDisplay.forEach((researcher, index) => {
+                    const row = researchersTableBody.insertRow();
+                    
+                    let displayStatus = 'نامشخص';
+                    let statusClass = '';
+                    if (researcher['Status'] === 'Active') {
+                        displayStatus = 'فعال';
+                        statusClass = 'active-status';
+                    } else if (researcher['Status'] === 'Deactive') {
+                        displayStatus = 'غیرفعال';
+                        statusClass = 'inactive-status';
+                    } else {
+                        displayStatus = researcher['Status'] || 'نامشخص'; // Fallback if not Active/Deactive
+                        statusClass = 'inactive-status'; // Default to inactive style if not recognized
+                    }
+
+                    let displayLevel = 'نامشخص';
+                    let levelClass = '';
+                    if (researcher['Level'] === 'Senior') {
+                        displayLevel = 'ارشد';
+                        levelClass = 'senior-level';
+                    } else if (researcher['Level'] === 'Junior') {
+                        displayLevel = 'کارآموز';
+                        levelClass = 'intern-level';
+                    } else {
+                        displayLevel = researcher['Level'] || 'نامشخص'; // Fallback if not Senior/Junior
+                        levelClass = 'intern-level'; // Default to intern style if not recognized
+                    }
+
+                    row.innerHTML = `
+                        <td>${researcher['Name (Farsi)'] || 'نامشخص'}</td>
+                        <td><span class="status-card ${statusClass}">${displayStatus}</span></td>
+                        <td><span class="level-card ${levelClass}">${displayLevel}</span></td>
+                        <td>${convertToPersianNumbers(researcher.numProposals)}</td>
+                        <td>${convertToPersianNumbers(researcher.numPublications)}</td>
+                        <td>
+                            <button class="details-button" title="مشاهده جزئیات" data-index="${startIndex + index}" data-type="researcher">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </td>
+                    `;
+                });
+
+                document.querySelectorAll('.details-button[data-type="researcher"]').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const index = parseInt(event.currentTarget.dataset.index);
+                        const researcher = filteredResearchers[index];
+                        showDetailsModal('researcher', researcher);
+                    });
+                });
+
+                updatePaginationResearchers();
+                totalResearchersCount.textContent = convertToPersianNumbers(`نمایش ${filteredResearchers.length} پژوهشگر`);
+            }
+
+            function updatePaginationResearchers() {
+                const totalPages = Math.ceil(filteredResearchers.length / rowsPerPage);
+                researcherPageInfo.textContent = convertToPersianNumbers(`صفحه ${currentPageResearchers} از ${totalPages}`);
+                researcherPrevPageButton.disabled = currentPageResearchers === 1;
+                researcherNextPageButton.disabled = currentPageResearchers === totalPages || totalPages === 0;
+            }
+
+            function filterResearchers() {
+                const searchTerm = researcherSearchInput.value.toLowerCase();
+                const selectedStatus = researcherStatusFilterDropdown.value.toLowerCase();
+                const selectedLevel = researcherLevelFilterDropdown.value.toLowerCase();
+
+                filteredResearchers = allResearchers.filter(researcher => {
+                    const name = (researcher['Name (Farsi)'] || '').toLowerCase();
+                    const status = (researcher['Status'] || '').toLowerCase();
+                    const level = (researcher['Level'] || '').toLowerCase();
+
+                    const matchesSearchTerm = name.includes(searchTerm);
+                    const matchesStatusFilter = selectedStatus === '' || status === selectedStatus;
+                    const matchesLevelFilter = selectedLevel === '' || level === selectedLevel;
+
+                    return matchesSearchTerm && matchesStatusFilter && matchesLevelFilter;
+                });
+                currentPageResearchers = 1;
+                renderResearchersTable();
+            }
+
+            researcherPrevPageButton.addEventListener('click', () => {
+                if (currentPageResearchers > 1) {
+                    currentPageResearchers--;
+                    renderResearchersTable();
+                }
+            });
+
+            researcherNextPageButton.addEventListener('click', () => {
+                const totalPages = Math.ceil(filteredResearchers.length / rowsPerPage);
+                if (currentPageResearchers < totalPages) {
+                    currentPageResearchers++;
+                    renderResearchersTable();
+                }
+            });
+
+            researcherSearchInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    filterResearchers();
+                }
+            });
+
+            researcherSearchButton.addEventListener('click', filterResearchers);
+            researcherStatusFilterDropdown.addEventListener('change', filterResearchers);
+            researcherLevelFilterDropdown.addEventListener('change', filterResearchers);
+
+
+            // --- Common functions for tab switching and modal ---
+
+            // تابع برای نمایش مودال جزئیات
+            function showDetailsModal(type, data) {
+                // Reset modal content visibility
+                modalProposalDetails.style.display = 'none';
+                modalResearcherDetails.style.display = 'none';
+                modalHelpContent.style.display = 'none'; // Hide help content by default
+
+                if (type === 'proposal') {
+                    modalHeaderTitle.textContent = 'جزئیات طرح تحقیقاتی';
+                    modalProposalDetails.style.display = 'contents'; // Show proposal details
+                    modalTitle.textContent = data['عنوان فارسی'] || 'نامشخص';
+                    modalTrackingCode.textContent = data['کد رهگیری'] || 'نامشخص';
+                    modalStudyGroup.textContent = data['گروه مطالعات'] || 'نامشخص';
+                    modalSupervisor.textContent = data['حساب پژوهشیار'] || 'نامشخص';
+                    modalTargetCenter.textContent = data['مرکز هدف'] || 'نامشخص';
+                    modalEndDate.textContent = formatAndConvertDate(data['تاریخ خاتمه']);
+                    modalResponsibleResearcher.textContent = data['مسئول گزارشدهی'] || 'نامشخص';
+                    modalContractStartDate.textContent = formatAndConvertDate(data['تاریخ شروع قرارداد']);
+                    modalContractEndDate.textContent = formatAndConvertDate(data['تاریخ پایان قرارداد']);
+                    
+                    modalStatus.textContent = (data['موقعیت در سامانه'] || 'نامشخص').replace('معاونت', '').trim();
+                    modalApprovalDate.textContent = formatAndConvertDate(data['تاریخ تصویب']);
+
+
+                    collaboratorsTableBody.innerHTML = '';
+                    const addCollaborators = (namesString, role) => {
+                        if (namesString) {
+                            const names = namesString.split(',').map(name => name.trim()).filter(name => name !== '');
+                            names.forEach(name => {
+                                const row = collaboratorsTableBody.insertRow();
+                                row.innerHTML = `<td>${name}</td><td>${role}</td>`;
+                            });
+                        }
+                    };
+
+                    addCollaborators(data['مجریان'], 'مجری');
+                    addCollaborators(data['همکاران'], 'همکار');
+
+                    if (collaboratorsTableBody.children.length === 0) {
+                        const row = collaboratorsTableBody.insertRow();
+                        row.innerHTML = `<td colspan="2" style="text-align: center;">مجری و همکاری تعریف نشده است.</td>`;
+                    }
+
+                } else if (type === 'researcher') {
+                    modalHeaderTitle.textContent = 'جزئیات پژوهشگر';
+                    modalResearcherDetails.style.display = 'contents'; // Show researcher details
+                    modalResearcherName.textContent = data['Name (Farsi)'] || 'نامشخص';
+                    
+                    let modalDisplayStatus = 'نامشخص';
+                    if (data['Status'] === 'Active') {
+                        modalDisplayStatus = 'فعال';
+                    } else if (data['Status'] === 'Deactive') {
+                        modalDisplayStatus = 'غیرفعال';
+                    } else {
+                        modalDisplayStatus = data['Status'] || 'نامشخص';
+                    }
+                    modalResearcherStatus.textContent = modalDisplayStatus;
+
+                    let modalDisplayLevel = 'نامشخص';
+                    if (data['Level'] === 'Senior') {
+                        modalDisplayLevel = 'ارشد';
+                    } else if (data['Level'] === 'Junior') {
+                        modalDisplayLevel = 'کارآموز';
+                    } else {
+                        modalDisplayLevel = data['Level'] || 'نامشخص';
+                    }
+                    modalResearcherLevel.textContent = modalDisplayLevel;
+                    modalResearcherEmail.textContent = data['Email'] || 'نامشخص'; // Populate Email field
+
+                    // Populate Proposals Table for Researcher Modal
+                    modalResearcherProposalsTableBody.innerHTML = '';
+                    if (allProposals.length > 0 && data.proposalsCodes && data.proposalsCodes.length > 0) {
+                        const matchingProposals = allProposals.filter(p => data.proposalsCodes.includes(p['کد رهگیری']));
+                        if (matchingProposals.length > 0) {
+                            matchingProposals.forEach(proposal => {
+                                const row = modalResearcherProposalsTableBody.insertRow();
+                                const proposalStatus = (proposal['موقعیت در سامانه'] || 'نامشخص').replace('معاونت', '').trim();
+                                row.innerHTML = `
+                                    <td>${proposal['کد رهگیری'] || 'نامشخص'}</td>
+                                    <td>${proposal['عنوان فارسی'] || 'نامشخص'}</td>
+                                    <td>${formatAndConvertDate(proposal['تاریخ تصویب'])}</td>
+                                    <td>${proposalStatus}</td>
+                                `;
+                            });
+                        } else {
+                            modalResearcherProposalsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center;">هیچ طرحی یافت نشد.</td></tr>`;
+                        }
+                    } else {
+                        modalResearcherProposalsTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center;">هیچ طرحی مرتبطی وجود ندارد.</td></tr>`;
+                    }
+
+                    // Populate Articles Table for Researcher Modal
+                    modalResearcherArticlesTableBody.innerHTML = '';
+                    if (allArticles.length > 0 && data.publicationsCodes && data.publicationsCodes.length > 0) {
+                        const matchingArticles = allArticles.filter(a => data.publicationsCodes.includes(a['EID']));
+                        if (matchingArticles.length > 0) {
+                            matchingArticles.forEach(article => {
+                                const row = modalResearcherArticlesTableBody.insertRow();
+                                const articleLink = article['Link'] || '';
+                                row.innerHTML = `
+                                    <td>${article['Title'] || 'نامشخص'}</td>
+                                    <td>${article['Source title'] || 'نامشخص'}</td>
+                                    <td>${convertToPersianNumbers(article['Year'] || 'نامشخص')}</td>
+                                    <td>
+                                        ${articleLink ? `<a href="${articleLink}" target="_blank" class="article-link-button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
+                                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                                <polyline points="15 3 21 3 21 9"></polyline>
+                                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                                            </svg>
+                                        </a>` : 'ندارد'}
+                                    </td>
+                                `;
+                            });
+                        } else {
+                            modalResearcherArticlesTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center;">هیچ مقاله‌ای یافت نشد.</td></tr>`;
+                        }
+                    } else {
+                        modalResearcherArticlesTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center;">هیچ مقاله مرتبطی وجود ندارد.</td></tr>`;
+                    }
+                } else if (type === 'help') {
+                    modalHeaderTitle.textContent = data.title;
+                    helpTextContent.innerHTML = data.text; // Use innerHTML for paragraphs/breaks
+                    modalHelpContent.style.display = 'block'; // Show help content
+                }
+
+                projectDetailsModal.style.display = 'flex';
+            }
+
+            // تابع برای بستن مودال
+            function closeProjectDetailsModal() {
+                projectDetailsModal.style.display = 'none';
+            }
+
+            // رویدادها برای بستن مودال
+            closeModalButton.addEventListener('click', closeProjectDetailsModal);
+            window.addEventListener('click', (event) => {
+                if (event.target === projectDetailsModal) {
+                    closeProjectDetailsModal();
+                }
+            });
+
+            // رویداد برای تغییر تب
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+                    button.classList.add('active');
+                    const targetTabId = `${button.dataset.tab}-tab`;
+                    document.getElementById(targetTabId).classList.add('active');
+                    currentActiveTab = button.dataset.tab; // Update current active tab
+
+                    // Fetch data for the newly activated tab
+                    if (currentActiveTab === 'proposals') {
+                        fetchProposals();
+                    } else if (currentActiveTab === 'articles') {
+                        fetchArticles();
+                    } else if (currentActiveTab === 'researchers') {
+                        // Ensure allProposals and allArticles are fetched before rendering researcher details
+                        // if they are not already populated. This is crucial for the researcher modal tables.
+                        Promise.all([
+                            allProposals.length === 0 ? fetchProposals() : Promise.resolve(),
+                            allArticles.length === 0 ? fetchArticles() : Promise.resolve()
+                        ]).then(() => {
+                            fetchResearchers();
+                        });
+                    }
+                });
+            });
+
+            // Add event listeners for help icons
+            document.querySelectorAll('.help-icon-button').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.stopPropagation(); // Prevent sorting if it's a table header
+                    const helpType = event.currentTarget.dataset.helpType;
+                    let title = '';
+                    let text = '';
+
+                    if (helpType === 'status') {
+                        title = 'توضیحات وضعیت پژوهشگر';
+                        text = `
+                            <p>پژوهشگران به طور پیش‌فرض غیرفعال در نظر گرفته می‌شوند، مگر این که یکی از شرایط زیر را داشته باشند تا در وضعیت فعال محسوب شوند:</p>
+                            <ul>
+                                <li>طرح پژوهشی‌ای داشته باشند که در سامانه پژوهشیار، وضعیت «در حال اجرا» داشته باشد؛ یا</li>
+                                <li>مقاله‌ای با وابستگی کوتار داشته باشند که حداکثر طی یک سال گذشته چاپ شده باشد؛ یا</li>
+                                <li>طرح پژوهشی‌ای داشته باشند که در سامانه پژوهشیار، حداکثر طی یک سال اخیر خاتمه خورده باشد.</li>
+                            </ul>
+                        `;
+                    } else if (helpType === 'level') {
+                        title = 'توضیحات سطح پژوهشگر';
+                        text = `
+                            <p>پژوهشگران به طور پیش‌فرض کارآموز محسوب می‌شوند، مگر این که یکی از شرایط زیر را داشته باشند تا سطح ارشد محسوب شوند:</p>
+                            <ul>
+                                <li>در سامانه پژوهشیار، طرح پژوهشی‌ای داشته باشند که خاتمه خورده باشد؛ و یا</li>
+                                <li>مقاله چاپ‌شده با وابستگی کوتار داشته باشند.</li>
+                            </ul>
+                        `;
+                    }
+                    showDetailsModal('help', { title, text });
+                });
+            });
+
+
+            // بارگذاری اولیه داده‌ها هنگام بارگذاری صفحه (بر اساس تب پیش‌فرض)
+            // Remove active class from all tabs and content first
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Set the default tab as active
+            document.querySelector(`.tab-button[data-tab="${defaultTab}"]`).classList.add('active');
+            document.getElementById(`${defaultTab}-tab`).classList.add('active');
+
+            // Fetch data for the default tab
+            if (defaultTab === 'proposals') {
+                fetchProposals();
+            } else if (defaultTab === 'articles') {
+                fetchArticles();
+            } else if (defaultTab === 'researchers') {
+                // For the default 'researchers' tab, ensure all necessary data (proposals, articles) is loaded first
+                Promise.all([
+                    fetchProposals(), // Ensure proposals data is loaded
+                    fetchArticles()   // Ensure articles data is loaded
+                ]).then(() => {
+                    fetchResearchers(); // Then fetch researchers data
+                }).catch(error => {
+                    console.error("Error loading initial data for researchers tab:", error);
+                    // Optionally display a global error message
+                });
+            }
+        }; // closing window.onload
+    </script>
+</body>
+</html>
