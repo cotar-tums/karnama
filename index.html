@@ -1111,24 +1111,6 @@
             };
 
             /**
-             * به‌جای خطی‌–خطی خواندن CSV، این تابع خط‌ها را یکی‌کی
-             * به هم می‌چسباند تا تعداد «"»‌های باز و بسته برابر شود؛
-             * یعنی مطمئن می‌شود ردیف سرستون—even اگر داخل "↩︎" چند
-             * بار اینتر خورده باشد—به‌صورت یک‌تکه استخراج شود.
-             */
-            function joinUntilHeaderClosed(lines) {
-              let header = '';
-              let i = 0;
-              while (i < lines.length) {
-                header += (header ? '\n' : '') + lines[i];
-                const quoteCount = (header.match(/"/g) || []).length;
-                if (quoteCount % 2 === 0) break;   // تمام نقل‌قول‌ها بسته شده
-                i++;                                // ادامه بده تا بسته شود
-              }
-              return { header, nextIndex: i + 1 };  // nextIndex = سطری که داده‌ها از آن شروع می‌شود
-            }  
-
-            /**
              * Handles parsing CSV text into an array of objects.
              * Assumes headers are on the first non-empty line and data follows.
              * Handles quoted fields and escaped quotes ("").
@@ -1136,59 +1118,64 @@
              * @returns {{headers: string[], data: object[]}} An object containing headers and parsed data.
              */
             function parseCsvManual(csvText) {
-                const { header: headerLine, nextIndex } = joinUntilHeaderClosed(allLines);
-                const headerIndex = 0;              // چون حالا headerLine خودش ردیف کامل سرستون است
-                const dataRows = allLines.slice(nextIndex).filter(line => line.trim() !== '');
-                const headers = [];
-                let inQuoteHeader = false;
-                let currentFieldHeader = '';
-                for (let i = 0; i < headerLine.length; i++) {
-                    const char = headerLine[i];
+                const rows = [];
+                let currentRow = [];
+                let currentField = '';
+                let inQuote = false;
+                let i = 0;
+
+                while (i < csvText.length) {
+                    const char = csvText[i];
+                    const nextChar = csvText[i + 1];
+
                     if (char === '"') {
-                        inQuoteHeader = !inQuoteHeader;
-                        if (inQuoteHeader && i + 1 < headerLine.length && headerLine[i + 1] === '"') {
-                            currentFieldHeader += '"';
+                        if (inQuote && nextChar === '"') { // Escaped quote ""
+                            currentField += '"';
+                            i++; // Consume the second quote
+                        } else { // Toggle quote state
+                            inQuote = !inQuote;
+                        }
+                    } else if (char === ',' && !inQuote) { // Comma outside quotes, field delimiter
+                        currentRow.push(currentField.trim());
+                        currentField = '';
+                    } else if ((char === '\n' || char === '\r') && !inQuote) { // Newline outside quotes, row delimiter
+                        if (char === '\r' && nextChar === '\n') { // Handle CRLF
                             i++;
                         }
-                    } else if (char === ',' && !inQuoteHeader) {
-                        headers.push(currentFieldHeader.trim());
-                        currentFieldHeader = '';
-                    } else {
-                        currentFieldHeader += char;
+                        currentRow.push(currentField.trim()); // Push the last field of the row
+                        rows.push(currentRow); // Push the completed row
+                        currentRow = []; // Reset for next row
+                        currentField = '';
+                    } else { // Regular character
+                        currentField += char;
                     }
+                    i++;
                 }
-                headers.push(currentFieldHeader.trim());
 
-                const dataRows = allLines.slice(headerIndex + 1).filter(line => line.trim() !== '');
+                // Add the last field and row if any content remains
+                if (currentField !== '' || currentRow.length > 0) {
+                    currentRow.push(currentField.trim());
+                    rows.push(currentRow);
+                }
 
-                const parsedData = dataRows.map(line => {
-                    const values = [];
-                    let inQuote = false;
-                    let currentField = '';
-                    for (let i = 0; i < line.length; i++) {
-                        const char = line[i];
-                        if (char === '"') {
-                            inQuote = !inQuote;
-                            if (inQuote && i + 1 < line.length && line[i + 1] === '"') {
-                                currentField += '"';
-                                i++;
-                            }
-                        } else if (char === ',' && !inQuote) {
-                            values.push(currentField.trim());
-                            currentField = '';
-                        } else {
-                            currentField += char;
-                        }
-                    }
-                    values.push(currentField.trim());
+                // Filter out empty rows that might result from trailing newlines or empty lines
+                const nonEmptyRows = rows.filter(row => row.some(field => field !== ''));
 
-                    const rowData = {};
+                if (nonEmptyRows.length === 0) {
+                    console.error('CSV Parser - No valid data rows found after parsing.');
+                    return { headers: [], data: [] };
+                }
+
+                const headers = nonEmptyRows[0];
+                const data = nonEmptyRows.slice(1).map(row => {
+                    const rowObject = {};
                     headers.forEach((header, index) => {
-                        rowData[header] = values[index] !== undefined ? values[index] : '';
+                        rowObject[header] = row[index] !== undefined ? row[index] : '';
                     });
-                    return rowData;
+                    return rowObject;
                 });
-                return { headers, data: parsedData };
+
+                return { headers, data };
             }
 
             // تابع برای واکشی داده‌ها از گوگل شیت (طرح‌های پژوهشی)
@@ -1211,11 +1198,15 @@
                     });
                     populateStatusFilterDropdown();
                     filteredProposals = [...allProposals];
-                    renderTable();
+                    if (currentActiveTab === 'proposals') { // Only render if this is the active tab
+                        renderTable();
+                    }
 
                 } catch (error) {
                     console.error('Error fetching data from Google Sheet for proposals:', error);
-                    proposalsTableBody.innerHTML = `<tr><td colspan="5" style="color: red; text-align: center;">خطا در بارگذاری اطلاعات طرح‌های پژوهشی: ${error.message}</td></tr>`;
+                    if (currentActiveTab === 'proposals') { // Only update UI if this is the active tab
+                        proposalsTableBody.innerHTML = `<tr><td colspan="5" style="color: red; text-align: center;">خطا در بارگذاری اطلاعات طرح‌های پژوهشی: ${error.message}</td></tr>`;
+                    }
                 }
             }
 
@@ -1287,7 +1278,7 @@
                         <td>${convertToPersianNumbers(approvalDate)}</td>
                         <td>${status}</td>
                         <td>
-                            <button class="details-button" title="مشاهده جزئیات" data-index="${index}" data-type="proposal">
+                            <button class="details-button" title="مشاهده جزئیات" data-index="${startIndex + index}" data-type="proposal">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
                                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                     <circle cx="12" cy="12" r="3"></circle>
@@ -1329,8 +1320,8 @@
                     let proposalStatus = (proposal['موقعیت در سامانه'] || '').replace('معاونت', '').trim().toLowerCase();
 
                     const matchesSearchTerm = title.includes(searchTerm) ||
-                                                supervisor.includes(searchTerm) ||
-                                                proposalStatus.includes(searchTerm);
+                                                    supervisor.includes(searchTerm) ||
+                                                    proposalStatus.includes(searchTerm);
                     
                     const matchesStatusFilter = selectedStatus === '' || proposalStatus === selectedStatus;
 
@@ -1390,11 +1381,15 @@
                     
                     allArticles = parsedData;
                     filteredArticles = [...allArticles];
-                    renderArticlesTable();
+                    if (currentActiveTab === 'articles') { // Only render if this is the active tab
+                        renderArticlesTable();
+                    }
 
                 } catch (error) {
                     console.error('Error fetching articles data:', error);
-                    articlesTableBody.innerHTML = `<tr><td colspan="7" style="color: red; text-align: center; direction: ltr;">Error loading articles: ${error.message}. لطفاً مطمئن شوید شیت 'Publications' به درستی در وب به صورت CSV منتشر شده است.</td></tr>`;
+                    if (currentActiveTab === 'articles') { // Only update UI if this is the active tab
+                        articlesTableBody.innerHTML = `<tr><td colspan="7" style="color: red; text-align: center; direction: ltr;">Error loading articles: ${error.message}. لطفاً مطمئن شوید شیت 'Publications' به درستی در وب به صورت CSV منتشر شده است.</td></tr>`;
+                    }
                 }
             }
 
@@ -1561,11 +1556,15 @@
 
                     populateResearcherFilterDropdowns();
                     filteredResearchers = [...allResearchers];
-                    renderResearchersTable();
+                    if (currentActiveTab === 'researchers') { // Only render if this is the active tab
+                        renderResearchersTable();
+                    }
 
                 } catch (error) {
                     console.error('Error fetching data from Google Sheet for researchers:', error);
-                    researchersTableBody.innerHTML = `<tr><td colspan="6" style="color: red; text-align: center;">خطا در بارگذاری اطلاعات پژوهشگران: ${error.message}</td></tr>`;
+                    if (currentActiveTab === 'researchers') { // Only update UI if this is the active tab
+                        researchersTableBody.innerHTML = `<tr><td colspan="6" style="color: red; text-align: center;">خطا در بارگذاری اطلاعات پژوهشگران: ${error.message}</td></tr>`;
+                    }
                 }
             }
 
@@ -1963,7 +1962,7 @@
                 // For the default 'researchers' tab, ensure all necessary data (proposals, articles) is loaded first
                 Promise.all([
                     fetchProposals(), // Ensure proposals data is loaded
-                    fetchArticles()   // Ensure articles data is loaded
+                    fetchArticles()    // Ensure articles data is loaded
                 ]).then(() => {
                     fetchResearchers(); // Then fetch researchers data
                 }).catch(error => {
