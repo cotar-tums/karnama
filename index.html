@@ -1111,6 +1111,24 @@
             };
 
             /**
+             * به‌جای خطی‌–خطی خواندن CSV، این تابع خط‌ها را یکی‌کی
+             * به هم می‌چسباند تا تعداد «"»‌های باز و بسته برابر شود؛
+             * یعنی مطمئن می‌شود ردیف سرستون—even اگر داخل "↩︎" چند
+             * بار اینتر خورده باشد—به‌صورت یک‌تکه استخراج شود.
+             */
+            function joinUntilHeaderClosed(lines) {
+              let header = '';
+              let i = 0;
+              while (i < lines.length) {
+                header += (header ? '\n' : '') + lines[i];
+                const quoteCount = (header.match(/"/g) || []).length;
+                if (quoteCount % 2 === 0) break;   // تمام نقل‌قول‌ها بسته شده
+                i++;                                // ادامه بده تا بسته شود
+              }
+              return { header, nextIndex: i + 1 };  // nextIndex = سطری که داده‌ها از آن شروع می‌شود
+            }  
+
+            /**
              * Handles parsing CSV text into an array of objects.
              * Assumes headers are on the first non-empty line and data follows.
              * Handles quoted fields and escaped quotes ("").
@@ -1118,21 +1136,9 @@
              * @returns {{headers: string[], data: object[]}} An object containing headers and parsed data.
              */
             function parseCsvManual(csvText) {
-                const allLines = csvText.split(/\r?\n/); // Split by new line, keep empty lines for now
-                let headerIndex = -1;
-                for (let i = 0; i < allLines.length; i++) {
-                    if (allLines[i].trim() !== '') {
-                        headerIndex = i;
-                        break;
-                    }
-                }
-
-                if (headerIndex === -1 || allLines.length <= headerIndex) {
-                    console.error('CSV Parser - No headers found or not enough data lines in CSV.');
-                    return { headers: [], data: [] };
-                }
-
-                const headerLine = allLines[headerIndex];
+                const { header: headerLine, nextIndex } = joinUntilHeaderClosed(allLines);
+                const headerIndex = 0;              // چون حالا headerLine خودش ردیف کامل سرستون است
+                const dataRows = allLines.slice(nextIndex).filter(line => line.trim() !== '');
                 const headers = [];
                 let inQuoteHeader = false;
                 let currentFieldHeader = '';
