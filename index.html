@@ -757,6 +757,7 @@
                     <thead>
                         <tr>
                             <th>عنوان</th>
+                            <th>گروه مطالعات</th>
                             <th>استاد راهنما</th>
                             <th>تاریخ تصویب</th>
                             <th>وضعیت</th>
@@ -764,7 +765,7 @@
                         </tr>
                     </thead>
                     <tbody id="proposalsTableBody">
-                        <tr><td colspan="5" style="text-align: center;">در حال بارگذاری اطلاعات...</td></tr>
+                        <tr><td colspan="6" style="text-align: center;">در حال بارگذاری اطلاعات...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1205,7 +1206,7 @@
                 } catch (error) {
                     console.error('Error fetching data from Google Sheet for proposals:', error);
                     if (currentActiveTab === 'proposals') { // Only update UI if this is the active tab
-                        proposalsTableBody.innerHTML = `<tr><td colspan="5" style="color: red; text-align: center;">خطا در بارگذاری اطلاعات طرح‌های پژوهشی: ${error.message}</td></tr>`;
+                        proposalsTableBody.innerHTML = `<tr><td colspan="6" style="color: red; text-align: center;">خطا در بارگذاری اطلاعات طرح‌های پژوهشی: ${error.message}</td></tr>`;
                     }
                 }
             }
@@ -1239,7 +1240,7 @@
                 const proposalsToDisplay = filteredProposals.slice(startIndex, endIndex);
 
                 if (proposalsToDisplay.length === 0) {
-                    proposalsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">هیچ طرحی یافت نشد.</td></tr>';
+                    proposalsTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">هیچ طرحی یافت نشد.</td></tr>';
                     totalProposalsCount.textContent = convertToPersianNumbers(`نمایش ۰ طرح`);
                     pageInfo.textContent = convertToPersianNumbers(`صفحه ۰ از ۰`);
                     prevPageButton.disabled = true;
@@ -1252,6 +1253,7 @@
                     
                     const title = proposal['عنوان فارسی'] || 'نامشخص';
                     const supervisor = proposal['حساب پژوهشیار'] || 'نامشخص';
+                    const studyGroup = proposal['گروه مطالعات'] || 'نامشخص';
                     let status = (proposal['موقعیت در سامانه'] || 'نامشخص').replace('معاونت', '').trim();
 
                     let approvalDate = proposal['تاریخ تصویب'] || 'نامشخص';
@@ -1274,6 +1276,7 @@
 
                     row.innerHTML = `
                         <td>${title}</td>
+                        <td>${studyGroup}</td>
                         <td>${supervisor}</td>
                         <td>${convertToPersianNumbers(approvalDate)}</td>
                         <td>${status}</td>
@@ -1317,11 +1320,13 @@
                 filteredProposals = allProposals.filter(proposal => {
                     const title = (proposal['عنوان فارسی'] || '').toLowerCase();
                     const supervisor = (proposal['حساب پژوهشیار'] || '').toLowerCase();
+                    const studyGroup = (proposal['گروه مطالعات'] || '').toLowerCase();
                     let proposalStatus = (proposal['موقعیت در سامانه'] || '').replace('معاونت', '').trim().toLowerCase();
 
                     const matchesSearchTerm = title.includes(searchTerm) ||
-                                                    supervisor.includes(searchTerm) ||
-                                                    proposalStatus.includes(searchTerm);
+                                                supervisor.includes(searchTerm) ||
+                                                studyGroup.includes(searchTerm) ||
+                                                proposalStatus.includes(searchTerm);
                     
                     const matchesStatusFilter = selectedStatus === '' || proposalStatus === selectedStatus;
 
@@ -1974,3 +1979,4 @@
     </script>
 </body>
 </html>
+
